@@ -142,7 +142,7 @@ void mApp::Doframe()
 
 
 
-	//修改标题
+	//修改标题信息
 	wstring title;
 	{
 		title += L"运行时间: ";
