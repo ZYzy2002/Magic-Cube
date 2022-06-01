@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <DirectXMath.h>
+#include "DirectXMathExtend.h"
 
 #include "mGraphic.h"
 

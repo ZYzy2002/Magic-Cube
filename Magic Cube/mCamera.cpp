@@ -73,9 +73,7 @@ float mCamera::WorldDistance(const XMFLOAT3& otherObjectWorldPos)
 
 void mCamera::CameraMove(XMFLOAT3 DirectionVector)
 {
-	translation.x += DirectionVector.x * cameraVelocity;
-	translation.y += DirectionVector.y * cameraVelocity;
-	translation.z += DirectionVector.z * cameraVelocity;
+	translation += DirectionVector* cameraVelocity;
 }
 
 void mCamera::CameraLookUp(float angle)

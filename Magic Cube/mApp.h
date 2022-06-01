@@ -7,6 +7,7 @@
 #include "mTimer.h"
 #include "OneCube.h"
 #include "mCamera.h"
+#include "DirectXMathExtend.h"
 
 using namespace std;
 

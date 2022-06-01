@@ -102,15 +102,9 @@ void mApp::Doframe()
 	ScreenToClient(mwin.mhwnd, &clientCenterCursorPos);
 	clientCenterCursorPos.x -= 400; clientCenterCursorPos.y -= 300;
 	XMFLOAT3 mouseCursorVector = {
-		MainCamera->getCameraForwardVector().x
-		- clientCenterCursorPos.y / 300.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->getCameraUpVector().x		//clientCenterCursorPos.y 是 向下是正方向
-		- clientCenterCursorPos.x / 400.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->AspectRatio * MainCamera->getCameraLeftVector().x,
-		MainCamera->getCameraForwardVector().y
-		- clientCenterCursorPos.y / 300.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->getCameraUpVector().y
-		- clientCenterCursorPos.x / 400.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->AspectRatio * MainCamera->getCameraLeftVector().y,
-		MainCamera->getCameraForwardVector().z
-		- clientCenterCursorPos.y / 300.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->getCameraUpVector().z
-		- clientCenterCursorPos.x / 400.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->AspectRatio * MainCamera->getCameraLeftVector().z
+		MainCamera->getCameraForwardVector()
+		- clientCenterCursorPos.y / 300.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->getCameraUpVector()		//clientCenterCursorPos.y 是 向下是正方向
+		- clientCenterCursorPos.x / 400.f * (float)tan(MainCamera->FovAngleY / 2) * MainCamera->AspectRatio * MainCamera->getCameraLeftVector(),
 	};
 
 	int nearestCubeIndex = -1;
