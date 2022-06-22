@@ -25,3 +25,20 @@ DirectX::XMFLOAT3& DirectX::operator+=(XMFLOAT3& float3_1, const XMFLOAT3 float3
 	float3_1 = float3_1 + float3_2;
 	return float3_1;
 }
+
+float& DirectX::GetComponentProduct(XMFLOAT3& in, size_t i)
+{
+	switch (i)
+	{
+	case 0:
+		return in.x;
+		break;
+	case 1:
+		return in.y;
+		break;
+	case 2:
+		return in.z;
+		break;
+	}
+}
+

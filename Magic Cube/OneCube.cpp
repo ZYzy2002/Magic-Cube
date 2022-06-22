@@ -275,11 +275,11 @@ bool OneCube::RotationApproachPIDIV2()
 
 	if ((top - rotation.x) > (rotation.x - floor))
 	{
-		RotateAroundWorldCenter(XMFLOAT3{ -(rotation.x - floor) / 2,0,0 });
+		RotateAroundWorldCenter(XMFLOAT3{ -(rotation.x - floor) ,0,0 });
 	}
 	else
 	{
-		RotateAroundWorldCenter(XMFLOAT3{ (top - rotation.x) / 2,0,0 });
+		RotateAroundWorldCenter(XMFLOAT3{ (top - rotation.x) ,0,0 });
 	}
 
 	//y
@@ -298,11 +298,11 @@ bool OneCube::RotationApproachPIDIV2()
 
 	if ((top - rotation.y) > (rotation.y - floor))
 	{
-		RotateAroundWorldCenter(XMFLOAT3{ 0,-(rotation.y - floor) / 2,0 });
+		RotateAroundWorldCenter(XMFLOAT3{ 0,-(rotation.y - floor), 0 });
 	}
 	else
 	{
-		RotateAroundWorldCenter(XMFLOAT3{ 0,(top - rotation.y) / 2,0 });
+		RotateAroundWorldCenter(XMFLOAT3{ 0,top - rotation.y, 0 });
 	}
 	//z
 	roll = rotation.z / XM_PIDIV2;
@@ -320,11 +320,11 @@ bool OneCube::RotationApproachPIDIV2()
 
 	if ((top - rotation.z) > (rotation.z - floor))
 	{
-		RotateAroundWorldCenter(XMFLOAT3{ 0,0,-0.01 });
+		RotateAroundWorldCenter(XMFLOAT3{ 0,0, -(rotation.z - floor) });
 	}
 	else
 	{
-		RotateAroundWorldCenter(XMFLOAT3{ 0,0,0.01 });
+		RotateAroundWorldCenter(XMFLOAT3{ 0,0, top - rotation.z });
 	}
 
 	if (alignX && alignY && alignZ)

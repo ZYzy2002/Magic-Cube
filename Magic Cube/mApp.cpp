@@ -1,5 +1,5 @@
 #include "mApp.h"
-
+#include <map>  //用于排序左键鼠标移动向量的分量
 
 mApp::mApp()
 {
@@ -92,12 +92,11 @@ void mApp::Doframe()
 	mwin.mouseState.getRButtonDownStateMoveVector(rButtomMoveX, rButtomMoveY);
 	MainCamera->CameraLookUp(mouseMoveVelosity * rButtomMoveY);
 	MainCamera->CamaraLookRight(mouseMoveVelosity * rButtomMoveX);
-	//左键旋转OneCube
-	int lButtomMoveX, lButtomMoveY;
-	mwin.mouseState.getLButtomDownStateMoveVector(lButtomMoveX, lButtomMoveY);
 
-	
-	
+
+
+
+	//左键旋转OneCube
 	POINT clientCenterCursorPos; GetCursorPos(&clientCenterCursorPos);
 	ScreenToClient(mwin.mhwnd, &clientCenterCursorPos);
 	clientCenterCursorPos.x -= 400; clientCenterCursorPos.y -= 300;
@@ -123,16 +122,75 @@ void mApp::Doframe()
 		}
 	}
  	static shared_ptr<OneCube> p[9] = { NULL };	//正在旋转的cube
+	
 	bool isCollidedCubeOneOfTheNotAlignedCubes = false;
+	if (nearestCubeIndex != -1)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			isCollidedCubeOneOfTheNotAlignedCubes = isCollidedCubeOneOfTheNotAlignedCubes || (p[i] == oneCubes[nearestCubeIndex]);
+		}
+	}
 	
+	enum class Plane {X, Y, Z};
+	static Plane RotationPlane = Plane::X;
+	int lButtomMoveX, lButtomMoveY;
+	mwin.mouseState.getLButtomDownStateMoveVector(lButtomMoveX, lButtomMoveY);
+	XMFLOAT3 LMouseMoveVector =
+	{
+		-lButtomMoveX / 100.0f * MainCamera->getCameraLeftVector() + lButtomMoveY / 100.0f * MainCamera->getCameraUpVector()
+	};
+	//enum class RotationDirection { Clockwise, AntiClockwise};
+	std::map<float, Plane> sort;
+	sort[fabsf(LMouseMoveVector.x)] = Plane::X;
+	sort[fabsf(LMouseMoveVector.y)] = Plane::Y;
+	sort[fabsf(LMouseMoveVector.z)] = Plane::Z;
 
+		
+	if (isCollidedCubeOneOfTheNotAlignedCubes && nearestCubeIndex != -1)	
+	{
+		XMFLOAT3 rotator{ 0.f ,0.f ,0.0f };
+		XMFLOAT3 RotateDirection;
+		XMStoreFloat3(&RotateDirection, XMVector3Cross(XMLoadFloat3(&oneCubes[nearestCubeIndex]->translation), XMLoadFloat3(&LMouseMoveVector)));
+		GetComponentProduct(rotator, size_t(RotationPlane)) = GetComponentProduct(RotateDirection, size_t(RotationPlane));
 
+		for (auto i : p)
+		{
+			i->RotateAroundWorldCenter(rotator);
+		}
+	}
+	if (!isCollidedCubeOneOfTheNotAlignedCubes && nearestCubeIndex != -1 && mwin.mouseState.IsLButtonDown())
+	{
+		for (auto i : p)							//对齐原有的 9Cubes
+		{
+			if (i != nullptr)
+			{
+				i->RotationApproachPIDIV2();
+			}
+		}
+		RotationPlane = sort.begin()->second;		//选定新的 9Cubes
+		int cubeBeFound = 0;
+		for (auto i : oneCubes)
+		{
+			if ( fabsf(GetComponentProduct(oneCubes[nearestCubeIndex]->translation, size_t(RotationPlane)) - GetComponentProduct(i->translation, size_t(RotationPlane)))<0.01f)
+			{
+				p[cubeBeFound] = i;
+				cubeBeFound++;
+			}
+		}
+		assert(cubeBeFound == 9);					//****************
+									
+		XMFLOAT3 rotator{ 0.f, 0.f, 0.f };
+		XMFLOAT3 RotateDirection;
+		XMStoreFloat3(&RotateDirection, XMVector3Cross(XMLoadFloat3(&oneCubes[nearestCubeIndex]->translation), XMLoadFloat3(&LMouseMoveVector)));
+		GetComponentProduct(rotator, size_t(RotationPlane)) = GetComponentProduct(RotateDirection, size_t(RotationPlane));
 
+		for (auto i : p)
+		{
+			i->RotateAroundWorldCenter(rotator);
+		}
+	}
 
-	
-
-
-	
 
 
 
