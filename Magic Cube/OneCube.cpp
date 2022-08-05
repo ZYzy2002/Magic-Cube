@@ -229,7 +229,7 @@ void OneCube::UpDate()
 	D3D11_MAPPED_SUBRESOURCE mapSubsource{};
 	gfx->pContext->Map(pVConstBuffer.Get(), 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mapSubsource);
 	memcpy(mapSubsource.pData,&newConstVBuffer,sizeof(VConstBuffer));
-	gfx->pContext->Unmap(pVConstBuffer.Get(), 1u);
+	gfx->pContext->Unmap(pVConstBuffer.Get(), 0u);
 }
 
 void OneCube::ChangeTransform(XMFLOAT3 translation, XMFLOAT3 rotation, XMFLOAT3 scale)
